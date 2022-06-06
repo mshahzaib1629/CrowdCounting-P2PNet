@@ -159,6 +159,33 @@ If you find P2PNet is useful in your project, please consider citing us:
 }
 ```
 
+## How to Set Environment For Testing the Model (changed by: Shahzaib & Ammar)
+### install python 3.7 in system (if not installed already)
+  ``` 
+  sudo apt-get install python3.7 
+  ```
+### install Virtual Environment (if not installed already)
+  ```
+  pip install virtualenv
+  ```
+### set local environment for project using python3.7
+  ```
+  python3.7 -m venv p2p_env
+  ```
+### activate virtual environment
+  ```
+  source p2p_env/bin/activate
+  ```
+### install all the required packages in local environment by
+  ```
+  pip install -r requirements.txt
+  ```
+### download and store following files in "models/apdcephfs/private_changanwang/checkpoints/"
+ 	i) https://download.pytorch.org/models/vgg16_bn-6c64b313.pth
+ 	ii) https://download.pytorch.org/models/vgg16-397923af.pth
+#### Now run following command to test the model
+ 	CUDA_VISIBLE_DEVICES=0 python3.7 run_test.py --weight_path ./weights/SHTechA.pth --output_dir ./logs/
+
 ## Related works from Tencent Youtu Lab
 - [AAAI2021] To Choose or to Fuse? Scale Selection for Crowd Counting. ([paper link](https://ojs.aaai.org/index.php/AAAI/article/view/16360) & [codes](https://github.com/TencentYoutuResearch/CrowdCounting-SASNet))
 - [ICCV2021] Uniformity in Heterogeneity: Diving Deep into Count Interval Partition for Crowd Counting. ([paper link](https://arxiv.org/abs/2107.12619) & [codes](https://github.com/TencentYoutuResearch/CrowdCounting-UEPNet))
