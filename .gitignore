@@ -1,0 +1,6 @@
+**/__pycache__/
+.idea/
+logs/
+vis/
+models/apdcephfs/private_changanwang/checkpoints/
+p2p_env

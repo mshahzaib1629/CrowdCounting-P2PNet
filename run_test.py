@@ -7,6 +7,7 @@ from pathlib import Path
 import torch
 import torchvision.transforms as standard_transforms
 import numpy as np
+from PIL import Image
 
 from PIL import Image
 import cv2
@@ -29,9 +30,9 @@ def get_args_parser():
     parser.add_argument('--line', default=2, type=int,
                         help="line number of anchor points")
 
-    parser.add_argument('--output_dir', default='',
+    parser.add_argument('--output_dir', default='./log',
                         help='path where to save')
-    parser.add_argument('--weight_path', default='',
+    parser.add_argument('--weight_path', default='./weights/SHTechA.pth',
                         help='path where the trained weights saved')
 
     parser.add_argument('--gpu_id', default=0, type=int, help='the gpu used for evaluation')
@@ -43,7 +44,7 @@ def main(args, debug=False):
     os.environ["CUDA_VISIBLE_DEVICES"] = '{}'.format(args.gpu_id)
 
     print(args)
-    device = torch.device('cuda')
+    device = torch.device('cpu')
     # get the P2PNet
     model = build_model(args)
     # move to GPU
@@ -61,7 +62,7 @@ def main(args, debug=False):
     ])
 
     # set your image path here
-    img_path = "./vis/demo1.jpg"
+    img_path = "./vis/testImage1.jpg"
     # load the images
     img_raw = Image.open(img_path).convert('RGB')
     # round the size
@@ -95,6 +96,12 @@ def main(args, debug=False):
         img_to_draw = cv2.circle(img_to_draw, (int(p[0]), int(p[1])), size, (0, 0, 255), -1)
     # save the visualized image
     cv2.imwrite(os.path.join(args.output_dir, 'pred{}.jpg'.format(predict_cnt)), img_to_draw)
+
+    # image show code start
+    print("Total People in Image : ", predict_cnt)
+    img = Image.open("logs/pred" + str(predict_cnt) + ".jpg")
+    img.show()
+    # image show code end
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser('P2PNet evaluation script', parents=[get_args_parser()])
