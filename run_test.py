@@ -9,7 +9,6 @@ import torchvision.transforms as standard_transforms
 import numpy as np
 from PIL import Image
 
-from PIL import Image
 import cv2
 from crowd_datasets import build_dataset
 from engine import *
@@ -30,7 +29,7 @@ def get_args_parser():
     parser.add_argument('--line', default=2, type=int,
                         help="line number of anchor points")
 
-    parser.add_argument('--output_dir', default='./log',
+    parser.add_argument('--output_dir', default='./logs',
                         help='path where to save')
     parser.add_argument('--weight_path', default='./weights/SHTechA.pth',
                         help='path where the trained weights saved')
@@ -39,8 +38,9 @@ def get_args_parser():
 
     return parser
 
-def main(args, debug=False):
-
+def main(imageFile):
+    parser = argparse.ArgumentParser('P2PNet evaluation script', parents=[get_args_parser()])
+    args = parser.parse_args()
     os.environ["CUDA_VISIBLE_DEVICES"] = '{}'.format(args.gpu_id)
 
     print(args)
@@ -64,7 +64,7 @@ def main(args, debug=False):
     # set your image path here
     img_path = "./vis/testImage1.jpg"
     # load the images
-    img_raw = Image.open(img_path).convert('RGB')
+    img_raw = Image.open(imageFile).convert('RGB')
     # round the size
     width, height = img_raw.size
     new_width = width // 128 * 128
@@ -98,12 +98,12 @@ def main(args, debug=False):
     cv2.imwrite(os.path.join(args.output_dir, 'pred{}.jpg'.format(predict_cnt)), img_to_draw)
 
     # image show code start
-    print("Total People in Image : ", predict_cnt)
-    img = Image.open("logs/pred" + str(predict_cnt) + ".jpg")
-    img.show()
+    # img = Image.open("logs/pred" + str(predict_cnt) + ".jpg")
+    # img.show()
+    return predict_cnt, args.output_dir + "/pred" + str(predict_cnt) + ".jpg"
     # image show code end
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser('P2PNet evaluation script', parents=[get_args_parser()])
-    args = parser.parse_args()
-    main(args)
+# if __name__ == '__main__':
+#     parser = argparse.ArgumentParser('P2PNet evaluation script', parents=[get_args_parser()])
+#     args = parser.parse_args()
+#     main(args)
